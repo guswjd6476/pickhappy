@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, ResponsiveContainer } from 'recharts';
 import styles from './ResultPage.module.css';
 
 const types: Record<string, { name: string; plant: string }> = {
@@ -17,7 +17,6 @@ const types: Record<string, { name: string; plant: string }> = {
     I: { name: '평화주의자', plant: '라벤더' },
 };
 
-// 🔹 각 그룹(A~I)의 점수를 합산하여 결과 계산
 const calculateResult = (answers: Record<string, number>) => {
     const scores: Record<string, number> = {};
 
@@ -37,24 +36,27 @@ const calculateResult = (answers: Record<string, number>) => {
 export default function ResultPage() {
     const searchParams = useSearchParams();
     const [result, setResult] = useState<{ type: string; score: number } | null>(null);
-    const [chartData, setChartData] = useState<{ type: string; score: number }[]>([]);
+    const [chartData, setChartData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const clientid = searchParams.get('clientid');
+    const testDate = new Date().toLocaleDateString(); // 검사 날짜
 
     useEffect(() => {
         if (!clientid) return;
 
         const fetchAnswers = async () => {
             try {
-                const response = await fetch(`/api/answers?clientid=${clientid}`);
+                const response = await fetch(`/api/getIdAnswers?clientid=${clientid}`);
                 const data = await response.json();
 
                 if (response.ok && data.answers) {
-                    const { maxType, scores } = calculateResult(data.answers);
+                    const { maxType, scores } = calculateResult(data.answers.answers);
                     setResult(maxType);
 
+                    // RadarChart 데이터 포맷팅
                     const formattedChartData = Object.keys(types).map((type) => ({
-                        type,
+                        subject: types[type].name,
+                        type, // A, B, C, D 추가
                         score: scores[type] || 0,
                     }));
                     setChartData(formattedChartData);
@@ -69,46 +71,79 @@ export default function ResultPage() {
         fetchAnswers();
     }, [clientid]);
 
-    if (loading) return <p>결과를 불러오는 중...</p>;
-    if (!result || !result.type) return <p>결과를 계산할 수 없습니다.</p>;
+    if (loading) return <p className={styles.loading}>결과를 불러오는 중...</p>;
+    if (!result || !result.type) return <p className={styles.error}>결과를 계산할 수 없습니다.</p>;
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>결과 페이지</h1>
-            <p className={styles.description}>
-                <strong>{clientid}</strong>님의 성격 유형은 <strong>{types[result.type]?.name || '알 수 없음'}</strong>
-                입니다.
-                <br />
-                당신을 닮은 식물은 <strong>{types[result.type]?.plant || '???'}</strong> 🌱
-            </p>
+            <div className={styles.reportBox}>
+                <h1 className={styles.title}>성격 유형 검사 결과</h1>
+                <p className={styles.testInfo}>
+                    <strong>검사 ID:</strong> {clientid} <br />
+                    <strong>검사 날짜:</strong> {testDate}
+                </p>
+                <p className={styles.resultText}>
+                    당신의 주요 성격 유형은 <strong>{types[result.type]?.name || '알 수 없음'}</strong>입니다.
+                    <br />
+                    당신을 닮은 식물은 <strong>{types[result.type]?.plant || '???'}</strong> 🌱 입니다.
+                </p>
 
-            <div className={styles.chartContainer}>
-                <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                >
-                    <BarChart
-                        data={chartData}
-                        className={styles.chart}
-                    >
-                        <XAxis dataKey="type" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar
-                            dataKey="score"
-                            fill="#ff66cc"
-                            radius={[8, 8, 0, 0]}
-                        />
-                    </BarChart>
-                </ResponsiveContainer>
+                {chartData.length > 0 && (
+                    <div className={styles.chartContainer}>
+                        <ResponsiveContainer
+                            width="100%"
+                            height={500}
+                        >
+                            <RadarChart
+                                cx="50%"
+                                cy="50%"
+                                outerRadius="80%"
+                                data={chartData}
+                            >
+                                <PolarGrid />
+                                <PolarAngleAxis
+                                    dataKey="type" // A, B, C, D
+                                    tickFormatter={(value) => `${value}`} // 라벨 표시
+                                />
+                                <PolarRadiusAxis
+                                    angle={30}
+                                    domain={[0, 10]}
+                                />
+                                <Radar
+                                    name="성격 점수"
+                                    dataKey="score"
+                                    stroke="#00796b"
+                                    fill="#00796b"
+                                    fillOpacity={0.6}
+                                />
+                                <Tooltip />
+                            </RadarChart>
+                        </ResponsiveContainer>
+                    </div>
+                )}
+
+                <table className={styles.resultTable}>
+                    <thead>
+                        <tr>
+                            <th>유형</th>
+                            <th>설명</th>
+                            <th>점수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {chartData.map(({ type, score }) => (
+                            <tr
+                                key={type}
+                                className={result.type === type ? styles.highlightRow : ''}
+                            >
+                                <td>{type}</td>
+                                <td>{types[type]?.name}</td> {/* Correctly accessing name */}
+                                <td>{score}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-
-            <button
-                className={styles.button}
-                onClick={() => window.location.reload()}
-            >
-                다시 시작하기
-            </button>
         </div>
     );
 }
