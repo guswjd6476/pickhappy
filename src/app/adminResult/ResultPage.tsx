@@ -17,6 +17,13 @@ const types: Record<string, { name: string; plant: string }> = {
     I: { name: '평화주의자', plant: '라벤더' },
 };
 
+// Define a type for the chart data
+interface ChartData {
+    subject: string;
+    type: string;
+    score: number;
+}
+
 const calculateResult = (answers: Record<string, number>) => {
     const scores: Record<string, number> = {};
 
@@ -36,7 +43,7 @@ const calculateResult = (answers: Record<string, number>) => {
 export default function ResultPage() {
     const searchParams = useSearchParams();
     const [result, setResult] = useState<{ type: string; score: number } | null>(null);
-    const [chartData, setChartData] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<ChartData[]>([]); // Use the specific ChartData type here
     const [loading, setLoading] = useState(true);
     const clientid = searchParams.get('clientid');
     const testDate = new Date().toLocaleDateString(); // 검사 날짜
