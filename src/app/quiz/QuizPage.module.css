@@ -1,0 +1,128 @@
+/* 배경 스타일 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #c8e6c9, #fff9c4);
+    padding: 2rem;
+    height: 100dvh;
+}
+
+/* 카드 스타일 */
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    border: 4px solid #ffeb3b; /* 피크민 느낌 노란색 */
+    position: relative;
+}
+
+/* 진행 바 */
+.progressBar {
+    width: 100%;
+    background-color: #eeeeee;
+    border-radius: 1rem;
+    height: 8px;
+    margin-bottom: 2rem;
+}
+
+.progress {
+    background-color: #ffeb3b; /* 노란색 */
+    height: 100%;
+    border-radius: 1rem;
+    transition: width 0.3s;
+}
+
+/* 질문 텍스트 */
+.question {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #388e3c; /* 피크민 느낌 초록색 */
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* 점수 버튼 컨테이너 */
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* 버튼 사이에 간격 추가 */
+}
+
+/* 점수 버튼 */
+.button {
+    padding: 1rem 2rem;
+    background: linear-gradient(145deg, #81c784, #66bb6a); /* 초록색 그라데이션 */
+    color: white;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 버튼에 그림자 효과 추가 */
+}
+
+.button:hover {
+    background: linear-gradient(145deg, #66bb6a, #81c784); /* 클릭 시 색상 반전 */
+    transform: scale(1.1); /* 버튼이 커짐 */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 강하게 */
+}
+
+.button:active {
+    transform: scale(1.05); /* 클릭 시 살짝 작은 효과 */
+}
+
+/* 마지막 버튼 */
+.submitButton {
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(145deg, #42a5f5, #2196f3); /* 파란색 그라데이션 */
+    color: white;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+.submitButton:hover {
+    background: linear-gradient(145deg, #2196f3, #42a5f5); /* 클릭 시 색상 반전 */
+    transform: scale(1.1); /* 버튼이 커짐 */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* 그림자 강하게 */
+}
+
+.submitButton:active {
+    transform: scale(1.05); /* 클릭 시 살짝 작은 효과 */
+}
+
+/* 피크민 아이콘 */
+.iconContainer {
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ffeb3b; /* 노란색 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.iconGreen {
+    background-color: #81c784; /* 초록색 */
+}
+
+.iconBlue {
+    background-color: #42a5f5; /* 파란색 */
+}

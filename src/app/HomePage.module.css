@@ -1,0 +1,144 @@
+/* 배경 그라디언트 및 피크민 느낌 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #ffeb3b, #a5d6a7);
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+    height: 100dvh;
+}
+
+/* 배경 장식: 동글동글한 느낌 */
+.backgroundDecoration {
+    position: absolute;
+    animation: bounce 2s infinite;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.backgroundDecorationFirst {
+    top: 15%;
+    left: 10%;
+    width: 70px;
+    height: 70px;
+    background-color: #ffeb3b; /* 밝은 노란색 */
+}
+
+.backgroundDecorationSecond {
+    bottom: 15%;
+    right: 10%;
+    width: 90px;
+    height: 90px;
+    background-color: #81c784; /* 부드러운 초록색 */
+    animation-delay: 1s;
+}
+
+/* 카드 스타일 */
+.card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+    border: 4px solid #ffeb3b;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* 작은 피크민 아이콘 */
+.iconContainer {
+    position: absolute;
+    top: -24px;
+    left: 12px;
+    display: flex;
+    gap: 12px;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.iconYellow {
+    background-color: #ffeb3b; /* 밝은 노란색 */
+}
+
+.iconBlue {
+    background-color: #42a5f5; /* 파란색 */
+}
+
+.iconGreen {
+    background-color: #66bb6a; /* 부드러운 초록색 */
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #388e3c;
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: #212121;
+    margin-bottom: 1.5rem;
+}
+
+.inputField {
+    padding: 1rem;
+    font-size: 1.125rem;
+    border: 4px solid #ffeb3b;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.inputField:focus {
+    border-color: #66bb6a; /* 초록색 포커스 */
+    outline: none;
+    transform: scale(1.05);
+}
+
+.button {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background-color: #388e3c; /* 초록색 */
+    color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #2c6b31; /* 어두운 초록색 */
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}

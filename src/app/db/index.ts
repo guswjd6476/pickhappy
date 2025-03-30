@@ -1,50 +1,54 @@
 import { Client } from 'pg';
 
-// 단일 데이터베이스 클라이언트 설정
+// 데이터베이스 클라이언트 초기화 (한 번만 연결)
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: { rejectUnauthorized: false },
 });
 
+// 서버가 시작될 때 연결
 client
     .connect()
-    .then(() => console.log('✅ Database connected'))
-    .catch((err) => console.error('❌ Connection error', err.stack));
+    .then(() => console.log('Database connected'))
+    .catch((err) => console.error('Connection error', err.stack));
 
-// 🔹 데이터 삽입 함수 (JSONB 저장)
+// 데이터 삽입 함수
 export const insertAnswers = async (clientid: string, answers: Record<string, number>) => {
     try {
         const query = 'INSERT INTO responses (clientid, answers) VALUES ($1, $2)';
-        await client.query(query, [clientid, answers]); // JSON 데이터를 그대로 저장
-        console.log('✅ Data inserted successfully');
+        await client.query(query, [clientid, JSON.stringify(answers)]); // clientid와 answers를 함께 저장
+        console.log('Data inserted successfully');
     } catch (error) {
-        console.error('❌ Error inserting data:', error);
+        console.error('Error inserting data:', error);
         throw new Error('Error inserting data');
     }
 };
 
-// 🔹 데이터 조회 함수 (JSONB 조회)
+// 전체 데이터를 조회하는 함수
 interface AnswerData {
-    answers: Record<string, number>;
+    clientid: string; // 각 응답에 대해 clientid도 함께 반환
+    answers: Record<string, number>; // answers의 타입을 Record<string, number>로 정의
+    created_at: string; // created_at 필드 추가
 }
 
-export async function getAnswers(clientid: string): Promise<AnswerData | null> {
+export const getAnswers = async (): Promise<AnswerData[] | null> => {
     try {
-        const query = 'SELECT answers FROM responses WHERE clientid = $1';
-        const { rows } = await client.query(query, [clientid]);
+        const query = 'SELECT clientid, answers, created_at FROM responses';
+        const { rows } = await client.query(query);
 
         if (rows.length === 0) {
-            return null;
+            return null; // 데이터가 없으면 null 반환
         }
 
-        return rows[0]; // JSONB 데이터 그대로 반환
+        return rows.map((row) => ({
+            clientid: row.clientid,
+            answers: row.answers, // jsonb로 저장된 객체를 그대로 반환
+            created_at: row.created_at, // 생성일 추가
+        }));
     } catch (error) {
-        console.error('❌ Database connection error:', error);
+        console.error('Database connection error:', error);
         throw new Error('데이터베이스 연결 오류');
     }
-}
+};
 
 // 서버 종료 시 클라이언트 종료 처리
-process.on('exit', () => {
-    client.end();
-});

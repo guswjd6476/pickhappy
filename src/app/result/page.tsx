@@ -1,36 +1,11 @@
+// app/result/page.tsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import styled from 'styled-components';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-
-const Container = styled.div`
-    text-align: center;
-    padding: 20px;
-    background: radial-gradient(circle, rgba(245, 232, 255, 0.7), rgba(180, 255, 180, 0.7));
-    color: #3b3b3b;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-`;
-
-const Header = styled.h1`
-    font-size: 2.8rem;
-    color: #ff66cc;
-    margin-bottom: 20px;
-`;
-
-const Description = styled.p`
-    font-size: 1.4rem;
-    color: #4d4d4d;
-`;
-
-const ChartContainer = styled.div`
-    width: 100%;
-    max-width: 600px;
-    height: 300px;
-    margin: 30px auto;
-`;
+import styles from './ResultPage.module.css'; // CSS 모듈 import
 
 const types: Record<string, { name: string; plant: string }> = {
     A: { name: '개혁가', plant: '루꼴라' },
@@ -92,26 +67,29 @@ export default function ResultPage() {
     if (!result || !result.type) return <p>결과를 계산 중입니다...</p>;
 
     return (
-        <Container>
-            <Header>결과 페이지</Header>
-            <Description>
-                <strong>{clientid}</strong>님의 성격 유형은 <strong>{types[result.type]?.name || '알 수 없음'}</strong>{' '}
+        <div className={styles.container}>
+            <h1 className={styles.title}>결과 페이지</h1>
+            <p className={styles.description}>
+                <strong>{clientid}</strong>님의 성격 유형은 <strong>{types[result.type]?.name || '알 수 없음'}</strong>
                 입니다.
                 <br />
                 당신을 닮은 식물은 <strong>{types[result.type]?.plant || '???'}</strong> 🌱
-            </Description>
+            </p>
 
-            {/* 🔹 A~I 그래프 표시 */}
-            <ChartContainer>
+            <div className={styles.chartContainer}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData}>
+                    <BarChart data={chartData} className={styles.chart}>
                         <XAxis dataKey="type" />
                         <YAxis />
                         <Tooltip />
                         <Bar dataKey="score" fill="#ff66cc" radius={[8, 8, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
-            </ChartContainer>
-        </Container>
+            </div>
+
+            <button className={styles.button} onClick={() => window.location.reload()}>
+                다시 시작하기
+            </button>
+        </div>
     );
 }
