@@ -7,7 +7,7 @@ import styles from './ResultPage.module.css';
 
 const types: Record<string, { name: string; plant: string }> = {
     A: { name: '개혁가', plant: '루꼴라' },
-    B: { name: '조력자', plant: '카모마일' },
+    B: { name: '조력자', plant: '' },
     C: { name: '성취자', plant: '해바라기' },
     D: { name: '예술가', plant: '팬지' },
     E: { name: '탐구자', plant: '바질' },

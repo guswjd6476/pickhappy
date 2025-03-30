@@ -14,7 +14,7 @@ const types: Record<string, { name: string; plant: string; description: string }
     },
     B: {
         name: '조력자',
-        plant: '카모마일',
+        plant: '캐모마일',
         description:
             '조력자는 따뜻한 성격으로 주변을 돌보는 걸 좋아하며, 카모마일은 허브 차로 활용할 수 있어 선물하기에도 좋아. 키우기도 쉬워서 부담 없이 심을 수 있어.',
     },

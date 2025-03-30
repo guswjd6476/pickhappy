@@ -51,12 +51,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem; /* 버튼 사이에 간격 추가 */
+    gap: 0.3rem; /* 버튼 사이에 간격 추가 */
 }
 
 /* 점수 버튼 */
 .button {
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     background: linear-gradient(145deg, #81c784, #66bb6a); /* 초록색 그라데이션 */
     color: white;
     border-radius: 50px;
