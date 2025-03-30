@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './DashboardPage.module.css';
 
-// Define the type for the answer object
 interface Answer {
     clientid: string;
-    answers: Record<string, number>; // Answers in the form of { questionId: score }
+    answers: Record<string, number>;
     created_at: string;
 }
 
@@ -21,20 +20,20 @@ interface UserResult {
 export default function DashboardPage() {
     const [userResults, setUserResults] = useState<UserResult[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>(''); // 이름 검색
     const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/getAnswers'); // 서버에서 데이터를 받아옴
+                const response = await fetch('/api/getAnswers');
 
-                // 응답 상태 코드 확인
                 if (!response.ok) {
                     throw new Error('서버 응답이 잘못되었습니다.');
                 }
 
-                const text = await response.text(); // 응답을 먼저 텍스트로 읽어봄
-                const data = text ? JSON.parse(text) : {}; // 비어 있으면 빈 객체로 처리
+                const text = await response.text();
+                const data = text ? JSON.parse(text) : {};
 
                 console.log(data, '?data');
 
@@ -45,6 +44,10 @@ export default function DashboardPage() {
                         answers: answer.answers,
                         created_at: answer.created_at,
                     }));
+
+                    // 시간순으로 내림차순 정렬
+                    results.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
                     setUserResults(results);
                 }
             } catch (error) {
@@ -58,11 +61,37 @@ export default function DashboardPage() {
     }, []);
 
     const handleViewDetails = (user: UserResult) => {
-        const answersParam = Object.entries(user.answers)
-            .map(([id, score]) => `${id}-${score}`)
-            .join(',');
-        router.push(`/result?clientid=${user.clientid}&answers=${answersParam}`); // 상세보기로 이동
+        router.push(`/adminResult?clientid=${user.clientid}`);
     };
+
+    const handleDelete = async (clientid: string) => {
+        // 삭제 확인 메시지
+        const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
+
+        if (confirmDelete) {
+            try {
+                const response = await fetch('/api/deleteUser', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ clientid }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('삭제 실패');
+                }
+
+                // 삭제 성공 시, 목록에서 해당 사용자 삭제
+                setUserResults(userResults.filter((user) => user.clientid !== clientid));
+                console.log(`User with clientid ${clientid} deleted successfully`);
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
+        }
+    };
+
+    const filteredResults = userResults.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
     if (loading) {
         return <div>로딩 중...</div>;
@@ -71,22 +100,46 @@ export default function DashboardPage() {
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>상담사 대시보드</h1>
+
+            {/* 이름으로 찾기 기능 */}
+            <div className={styles.searchContainer}>
+                <input
+                    type="text"
+                    placeholder="이름으로 검색..."
+                    className={styles.searchInput}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
+
             <table className={styles.table}>
                 <thead>
                     <tr>
                         <th>이름</th>
                         <th>상세보기</th>
                         <th>참여시간</th>
+                        <th>삭제</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {userResults.map((user) => (
+                    {filteredResults.map((user) => (
                         <tr key={user.clientid}>
                             <td>{user.name}</td>
                             <td>{user.created_at}</td>
                             <td>
-                                <button className={styles.viewButton} onClick={() => handleViewDetails(user)}>
+                                <button
+                                    className={styles.viewButton}
+                                    onClick={() => handleViewDetails(user)}
+                                >
                                     상세보기
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    className={styles.deleteButton}
+                                    onClick={() => handleDelete(user.clientid)}
+                                >
+                                    삭제
                                 </button>
                             </td>
                         </tr>
