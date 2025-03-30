@@ -9,7 +9,7 @@ export default function QuizPage() {
     const [answers, setAnswers] = useState<{ [key: string]: number }>({});
     const [current, setCurrent] = useState<number>(0);
     const router = useRouter();
-    const [clientName, setClientName] = useState<string | null>(null);
+    const [clientid, setClientName] = useState<string | null>(null);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -25,20 +25,31 @@ export default function QuizPage() {
     };
 
     const handleSubmitResults = async () => {
-        if (!clientName) {
+        if (!clientid) {
             alert('사용자 이름을 가져올 수 없습니다.');
             return;
         }
 
         try {
-            const queryString = Object.entries(answers)
-                .map(([key, value]) => `${key}-${value}`)
-                .join(',');
+            const response = await fetch('/api/submitAnswers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clientid, answers }),
+            });
+            if (response.ok) {
+                alert('검사 결과가 저장되었습니다.');
+                const queryString = Object.entries(answers)
+                    .map(([key, value]) => `${key}-${value}`)
+                    .join(',');
 
-            router.push(`/result?clientid=${encodeURIComponent(clientName)}&answers=${queryString}`);
+                router.push(`/result?clientid=${encodeURIComponent(clientid)}&answers=${queryString}`);
+            } else {
+                alert('데이터 삽입 중 오류가 발생했습니다.');
+            }
         } catch (error) {
-            console.error('❌ 데이터 저장 중 오류 발생:', error);
-            alert('데이터 저장 중 오류가 발생했습니다.');
+            console.error('Error:', error);
         }
     };
 
@@ -77,7 +88,10 @@ export default function QuizPage() {
             </div>
             {/* 결과 제출 버튼 */}
             {current === questions.length - 1 && (
-                <button className={styles.submitButton} onClick={handleSubmitResults}>
+                <button
+                    className={styles.submitButton}
+                    onClick={handleSubmitResults}
+                >
                     결과 보기
                 </button>
             )}

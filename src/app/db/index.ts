@@ -50,5 +50,24 @@ export const getAnswers = async (): Promise<AnswerData[] | null> => {
         throw new Error('데이터베이스 연결 오류');
     }
 };
+export const getIdAnswers = async (clientid: string): Promise<AnswerData | null> => {
+    try {
+        const query = 'SELECT clientid, answers, created_at FROM responses WHERE clientid = $1';
+        const { rows } = await client.query(query, [clientid]);
+
+        if (rows.length === 0) {
+            return null; // 해당 clientid의 데이터가 없으면 null 반환
+        }
+
+        return {
+            clientid: rows[0].clientid,
+            answers: rows[0].answers, // jsonb 객체 그대로 반환
+            created_at: rows[0].created_at, // 생성일 포함
+        };
+    } catch (error) {
+        console.error('Database query error:', error);
+        throw new Error('데이터 조회 중 오류 발생');
+    }
+};
 
 // 서버 종료 시 클라이언트 종료 처리
