@@ -67,7 +67,3 @@
 .deleteButton:hover {
     background-color: #d32f2f;
 }
-
-tbody tr:hover {
-    background-color: #f1f1f1;
-}
