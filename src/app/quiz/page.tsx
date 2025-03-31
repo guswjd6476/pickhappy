@@ -23,7 +23,8 @@ export default function QuizPage() {
             setCurrent(current + 1);
         }
     };
-
+    console.log(answers, '[?');
+    console.log(answers.length, 'length');
     const handleSubmitResults = async () => {
         if (!clientid) {
             alert('사용자 이름을 가져올 수 없습니다.');
@@ -86,8 +87,10 @@ export default function QuizPage() {
                     ))}
                 </div>
             </div>
-            {/* 결과 제출 버튼 */}
-            {current === questions.length - 1 && (
+            <div className={styles.description}>
+                1번은 매우아니다, 2번은 아니다, 3번은 보통, 4번은 그렇다, 5번은 매우 그렇다
+            </div>
+            {Object.keys(answers).length === questions.length && (
                 <button
                     className={styles.submitButton}
                     onClick={handleSubmitResults}

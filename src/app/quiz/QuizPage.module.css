@@ -126,3 +126,14 @@
 .iconBlue {
     background-color: #42a5f5; /* 파란색 */
 }
+.description {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f1f8e9;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    color: #388e3c;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
