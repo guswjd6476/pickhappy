@@ -56,6 +56,8 @@ export default function QuizPage() {
 
     return (
         <div className={styles.container}>
+            {/* 질문 텍스트 */}
+
             <div className={styles.card}>
                 {/* 피크민 아이콘 */}
                 <div className={styles.iconContainer}>
@@ -72,7 +74,6 @@ export default function QuizPage() {
                     ></div>
                 </div>
 
-                {/* 질문 텍스트 */}
                 <h2 className={styles.question}>{questions[current].question}</h2>
 
                 <div className={styles.buttonContainer}>
@@ -91,10 +92,7 @@ export default function QuizPage() {
                 1번은 매우아니다, 2번은 아니다, 3번은 보통, 4번은 그렇다, 5번은 매우 그렇다
             </div>
             {Object.keys(answers).length === questions.length && (
-                <button
-                    className={styles.submitButton}
-                    onClick={handleSubmitResults}
-                >
+                <button className={styles.submitButton} onClick={handleSubmitResults}>
                     결과 보기
                 </button>
             )}
