@@ -1,7 +1,7 @@
 export const questions = [
     { id: 'g2', type: '열정가', question: '나는 새로운 것을 체험할 때 기쁨을 느낀다' },
     { id: 'e3', type: '탐구자', question: '나는 감정적으로 에너지 낭비하는게 싫다' },
-    { id: 'b4', type: '조력자', question: '나는 다정다감하고 해교가 많은 편이다' },
+    { id: 'b4', type: '조력자', question: '나는 다정다감하고 애교가 많은 편이다' },
     { id: 'd1', type: '예술가', question: '나는 감정기복이 심해 금방 우울해진다' },
     { id: 'h1', type: '지도자', question: '나는 주도적이고 자기주장이 강한 편이다' },
     { id: 'a2', type: '개혁가', question: '나는 실수를 하면 스스로를 비판한다.' },
@@ -18,7 +18,7 @@ export const questions = [
     { id: 'd4', type: '예술가', question: '나는 남들과 다른 특별한 사람이고 싶다' },
     { id: 'a3', type: '개혁가', question: '나는 규칙과 원칙을 중요하게 여긴다.' },
     { id: 'e2', type: '탐구자', question: '나는 아는 것이 힘이고 정보가 돈이라고 생각한다' },
-    { id: 'i3', type: '평화주의자', question: '나는 겉으로는 우뷰부단 하지만 속으로는 내 고집이 있다' },
+    { id: 'i3', type: '평화주의자', question: '나는 겉으로는 우유부단 하지만 속으로는 내 고집이 있다' },
     { id: 'g3', type: '열정가', question: '나는 힘들고 괴로우면 피하고 싶다' },
     { id: 'd2', type: '예술가', question: '내 기분에 따라 의사결정이 달라지는 편이다' },
     { id: 'h2', type: '지도자', question: '나는 솔직하고 당당한 편이다' },
