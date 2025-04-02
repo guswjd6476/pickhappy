@@ -41,9 +41,9 @@ export default function StampName() {
     // stampType에 따라 제목 변경
     const getTitle = () => {
         switch (stampType) {
-            case 'secondStamp':
+            case 'secondstamp':
                 return '🔑 두 번째 코스: 키링 만들기 🔑';
-            case 'thirdStamp':
+            case 'thirdstamp':
                 return '🌱 지속가능한 마음 찾기 🌱';
             default:
                 return '🌼 나와 어울리는 씨 심기 🌼';
