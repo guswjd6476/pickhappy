@@ -1,0 +1,112 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #fdf7e3; /* 부드러운 배경 */
+    border: 3px solid #ffcc80;
+    border-radius: 20px;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #5a3e1b;
+    text-shadow: 2px 2px 0px #ffcc80;
+}
+
+.description {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #805d3a;
+}
+
+.stampBoard {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    padding: 10px;
+}
+
+.stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 3px solid #ffcc80;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    font-weight: bold;
+    color: #5a3e1b;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+}
+
+.stamp:active {
+    transform: scale(0.95);
+}
+
+.stamp::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 20px;
+    background-color: #ffcc80;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: white;
+    font-weight: bold;
+}
+
+.stamped {
+    background: url('/stamp.png') no-repeat center/contain;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.empty {
+    color: #ccc;
+    font-size: 30px;
+}
+
+@media (max-width: 480px) {
+    .stampBoard {
+        gap: 10px;
+    }
+    .stamp {
+        width: 80px;
+        height: 80px;
+    }
+    .stamped {
+        width: 80px;
+        height: 80px;
+    }
+    .title {
+        font-size: 22px;
+    }
+    .description {
+        font-size: 16px;
+    }
+}

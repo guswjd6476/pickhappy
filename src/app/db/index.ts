@@ -31,6 +31,13 @@ interface AnswerData {
     answers: Record<string, number>;
     created_at: string;
 }
+interface StampData {
+    clientid: string;
+    firststamp: boolean;
+    secondstamp: boolean;
+    thirdstamp: boolean;
+    laststamp: boolean;
+}
 
 // 모든 답변 조회 함수
 export const getAnswers = async (): Promise<AnswerData[] | null> => {
@@ -79,6 +86,7 @@ export const getIdAnswers = async (clientid: string): Promise<AnswerData | null>
         client.release(); // 쿼리 후 클라이언트 반환
     }
 };
+
 export const deleteUser = async (clientid: string): Promise<void> => {
     const client = await pool.connect(); // 커넥션 풀에서 클라이언트 가져오기
     try {
@@ -88,6 +96,46 @@ export const deleteUser = async (clientid: string): Promise<void> => {
     } catch (error) {
         console.error('Error deleting user:', error);
         throw new Error('사용자 삭제 중 오류 발생');
+    } finally {
+        client.release(); // 쿼리 후 클라이언트 반환
+    }
+};
+export const updateStamp = async (
+    clientid: string,
+    stampType: 'firststamp' | 'secondstamp' | 'thirdstamp' | 'laststamp'
+): Promise<void> => {
+    const client = await pool.connect(); // 커넥션 풀에서 클라이언트 가져오기
+    try {
+        const query = `UPDATE responses SET ${stampType} = TRUE WHERE clientid = $1;`;
+        await client.query(query, [clientid]);
+    } catch (error) {
+        console.error('도장 업데이트 오류:', error);
+    } finally {
+        client.release(); // 커넥션 반환
+    }
+};
+
+export const getIdStamp = async (clientid: string): Promise<StampData | null> => {
+    const client = await pool.connect(); // 커넥션 풀에서 클라이언트 가져오기
+    try {
+        const query =
+            'SELECT clientid, firststamp, secondstamp,thirdstamp,thirdstamp,laststamp FROM responses WHERE clientid = $1';
+        const { rows } = await client.query(query, [clientid]);
+
+        if (rows.length === 0) {
+            return null;
+        }
+
+        return {
+            clientid: rows[0].clientid,
+            firststamp: rows[0].firststamp, // jsonb 형태로 반환되면 파싱
+            secondstamp: rows[0].secondstamp,
+            thirdstamp: rows[0].thirdstamp,
+            laststamp: rows[0].laststamp,
+        };
+    } catch (error) {
+        console.error('Database query error:', error);
+        throw new Error('데이터 조회 중 오류 발생');
     } finally {
         client.release(); // 쿼리 후 클라이언트 반환
     }

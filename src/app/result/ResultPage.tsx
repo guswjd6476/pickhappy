@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import styles from './ResultPage.module.css';
-
+import { useRouter } from 'next/navigation';
 const types: Record<string, { name: string; plant: string; description: string }> = {
     A: {
         name: '개혁가',
@@ -82,7 +82,7 @@ export default function ResultPage() {
     const searchParams = useSearchParams();
     const [result, setResult] = useState<{ type: string; score: number } | null>(null);
     const clientid = searchParams.get('clientid');
-
+    const router = useRouter();
     useEffect(() => {
         const answersParam = searchParams.get('answers');
         if (answersParam) {
@@ -101,7 +101,30 @@ export default function ResultPage() {
 
     const { name, plant, description } = types[result.type];
     const imageUrl = `/${plant}.png`;
+    const handleStamp = async () => {
+        if (!clientid) return alert('clientid가 없습니다.');
 
+        try {
+            const response = await fetch('/api/updateStamp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clientid, stampType: 'firststamp' }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert('도장이 성공적으로 추가되었습니다!');
+                router.push(`/stamppage?clientid=${clientid}`); // 도장판 페이지로 이동
+            } else {
+                alert(`오류 발생: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('도장 업데이트 실패:', error);
+            alert('도장을 업데이트하는 중 오류가 발생했습니다.');
+        }
+    };
     return (
         <div className={styles.container}>
             <p className={styles.description}>
@@ -111,21 +134,13 @@ export default function ResultPage() {
             </p>
 
             <div className={styles.imageContainer}>
-                <Image
-                    src={imageUrl}
-                    alt={plant}
-                    width={300}
-                    height={300}
-                />
+                <Image src={imageUrl} alt={plant} width={300} height={300} />
             </div>
 
             <p className={styles.explanation}>{description}</p>
 
-            <button
-                className={styles.button}
-                onClick={() => window.location.reload()}
-            >
-                다시 시작하기
+            <button className={styles.button} onClick={handleStamp}>
+                도장받기
             </button>
         </div>
     );
