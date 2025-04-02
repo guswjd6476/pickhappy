@@ -5,13 +5,13 @@ import { motion } from 'framer-motion';
 import styles from './StampPage.module.css'; // CSS 모듈 import
 
 export default function StampName() {
-    const [name, setName] = useState('');
+    const [clientid, setName] = useState('');
     const searchParams = useSearchParams();
     const router = useRouter();
     const stampType = searchParams.get('stampType') || 'defaultStamp';
 
     const handleStamp = async () => {
-        if (name.trim() === '') {
+        if (clientid.trim() === '') {
             alert('이름을 입력해 주세요.');
             return;
         }
@@ -22,13 +22,13 @@ export default function StampName() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, stampType }),
+                body: JSON.stringify({ clientid, stampType }),
             });
 
             const data = await response.json();
             if (response.ok) {
                 alert('도장이 성공적으로 추가되었습니다!');
-                router.push(`/stamppage?clientid=${name}`); // 도장판 페이지로 이동
+                router.push(`/stamppage?clientid=${clientid}`); // 도장판 페이지로 이동
             } else {
                 alert(`오류 발생: ${data.message}`);
             }
@@ -69,7 +69,7 @@ export default function StampName() {
                 <motion.input
                     type="text"
                     placeholder="이름을 입력하세요"
-                    value={name}
+                    value={clientid}
                     onChange={(e) => setName(e.target.value)}
                     className={styles.inputField}
                     whileFocus={{ scale: 1.05 }}
