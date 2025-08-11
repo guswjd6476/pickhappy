@@ -14,8 +14,6 @@ export async function POST(request: Request) {
             );
         }
 
-        console.log('Received data:', { clientid, answers });
-
         // 데이터베이스에 삽입
         await insertAnswers(clientid, answers);
 

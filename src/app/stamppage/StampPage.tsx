@@ -23,7 +23,6 @@ export default function StampPage() {
                 const response = await fetch(`/api/getIdStamp?clientid=${clientid}`);
                 const data = await response.json();
                 if (response.ok) {
-                    console.log(data, '?Dtatata');
                     setStampStatus(data.answers);
                 } else {
                     console.error('Failed to fetch stamps:', data.message);

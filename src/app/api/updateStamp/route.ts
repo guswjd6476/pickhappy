@@ -12,7 +12,6 @@ export async function POST(request: Request) {
             );
         }
 
-        console.log('Received data:', { clientid, stampType });
         await updateStamp(clientid, stampType);
 
         return NextResponse.json({ message: '도장이 성공적으로 업데이트되었습니다.' }, { status: 200 });

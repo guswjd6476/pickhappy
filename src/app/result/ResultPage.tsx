@@ -4,59 +4,59 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import styles from './ResultPage.module.css';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 const types: Record<string, { name: string; plant: string; description: string }> = {
     A: {
         name: '개혁가',
-        plant: '루꼴라',
+        plant: '소',
         description:
             '계획적이고 체계적인 성향이 있어 규칙적으로 관리하면 잘 자라는 루꼴라와 잘 맞습니다. 발아가 빠르고 균형 잡힌 성장을 보여 완벽주의적인 성향과 잘 어울립니다.',
     },
     B: {
         name: '조력자',
-        plant: '캐모마일',
+        plant: '강아지',
         description:
             '조력자는 따뜻한 성격으로 주변을 돌보는 걸 좋아하며, 카모마일은 허브 차로 활용할 수 있어 선물하기에도 좋아. 키우기도 쉬워서 부담 없이 심을 수 있어.',
     },
     C: {
         name: '성취자',
-        plant: '해바라기',
+        plant: '독수리',
         description:
             '성취자는 목표 지향적이고 성장하는 걸 좋아해. 해바라기는 빠르게 자라며 태양을 따라 움직여, 앞으로 나아가려는 에너지를 상징해.',
     },
     D: {
         name: '예술가',
-        plant: '팬지',
+        plant: '고양이',
         description:
             '예술가는 감성이 풍부하고 개성을 중요하게 여겨. 팬지는 다양한 색상의 꽃을 피우는 식물로, 예술가가 원하는 대로 자유롭게 조합해서 키울 수 있어.',
     },
     E: {
         name: '탐구자',
-        plant: '바질',
+        plant: '부엉이',
         description:
             '탐구자는 지적 호기심이 많고 실험적인 걸 좋아해. 바질은 다양한 요리에 활용할 수 있어 연구하는 재미가 있어.',
     },
     F: {
         name: '충실한 유형',
-        plant: '상추',
+        plant: '사슴',
         description:
             '충실한 유형은 안정감을 중요하게 여겨. 상추는 빠르게 자라며 꾸준히 수확할 수 있어 정성을 들이면 보답을 주는 식물이라 잘 맞아.',
     },
     G: {
         name: '열정가',
-        plant: '방울토마토',
+        plant: '원숭이',
         description:
             '열정가는 활발하고 즐거움을 찾는 성격이야. 방울토마토는 빨갛게 열매가 맺히며 성장 과정을 지켜보는 재미가 있어.',
     },
     H: {
         name: '지도자',
-        plant: '고추',
+        plant: '호랑이',
         description:
             '지도자는 강하고 열정적인 성향이야. 고추는 강한 맛을 내며, 튼튼하게 잘 자라면서도 존재감이 확실한 식물이라 잘 어울려.',
     },
     I: {
         name: '평화주의자',
-        plant: '라벤더',
+        plant: '코끼리',
         description:
             '평화주의자는 조용하고 평온한 걸 좋아해. 라벤더는 은은한 향기로 마음을 안정시키고, 집 안 분위기를 편안하게 만들어 줘.',
     },
@@ -82,7 +82,7 @@ export default function ResultPage() {
     const searchParams = useSearchParams();
     const [result, setResult] = useState<{ type: string; score: number } | null>(null);
     const clientid = searchParams.get('clientid');
-    const router = useRouter();
+    // const router = useRouter();
     useEffect(() => {
         const answersParam = searchParams.get('answers');
         if (answersParam) {
@@ -101,30 +101,30 @@ export default function ResultPage() {
 
     const { name, plant, description } = types[result.type];
     const imageUrl = `/${plant}.png`;
-    const handleStamp = async () => {
-        if (!clientid) return alert('clientid가 없습니다.');
+    // const handleStamp = async () => {
+    //     if (!clientid) return alert('clientid가 없습니다.');
 
-        try {
-            const response = await fetch('/api/updateStamp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ clientid, stampType: 'firststamp' }),
-            });
+    //     try {
+    //         const response = await fetch('/api/updateStamp', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ clientid, stampType: 'firststamp' }),
+    //         });
 
-            const data = await response.json();
-            if (response.ok) {
-                alert('도장이 성공적으로 추가되었습니다!');
-                router.push(`/stamppage?clientid=${clientid}`); // 도장판 페이지로 이동
-            } else {
-                alert(`오류 발생: ${data.message}`);
-            }
-        } catch (error) {
-            console.error('도장 업데이트 실패:', error);
-            alert('도장을 업데이트하는 중 오류가 발생했습니다.');
-        }
-    };
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert('도장이 성공적으로 추가되었습니다!');
+    //             router.push(`/stamppage?clientid=${clientid}`); // 도장판 페이지로 이동
+    //         } else {
+    //             alert(`오류 발생: ${data.message}`);
+    //         }
+    //     } catch (error) {
+    //         console.error('도장 업데이트 실패:', error);
+    //         alert('도장을 업데이트하는 중 오류가 발생했습니다.');
+    //     }
+    // };
     return (
         <div className={styles.container}>
             <p className={styles.description}>
@@ -139,9 +139,9 @@ export default function ResultPage() {
 
             <p className={styles.explanation}>{description}</p>
 
-            <button className={styles.button} onClick={handleStamp}>
+            {/* <button className={styles.button} onClick={handleStamp}>
                 도장받기
-            </button>
+            </button> */}
         </div>
     );
 }

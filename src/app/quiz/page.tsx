@@ -23,8 +23,6 @@ export default function QuizPage() {
             setCurrent(current + 1);
         }
     };
-    console.log(answers, '[?');
-    console.log(answers.length, 'length');
     const handleSubmitResults = async () => {
         if (!clientid) {
             alert('사용자 이름을 가져올 수 없습니다.');

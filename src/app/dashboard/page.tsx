@@ -35,8 +35,6 @@ export default function DashboardPage() {
                 const text = await response.text();
                 const data = text ? JSON.parse(text) : {};
 
-                console.log(data, '?data');
-
                 if (data.answers) {
                     const results: UserResult[] = data.answers.map((answer: Answer) => ({
                         clientid: answer.clientid,
@@ -84,7 +82,6 @@ export default function DashboardPage() {
 
                 // 삭제 성공 시, 목록에서 해당 사용자 삭제
                 setUserResults(userResults.filter((user) => user.clientid !== clientid));
-                console.log(`User with clientid ${clientid} deleted successfully`);
             } catch (error) {
                 console.error('Error deleting user:', error);
             }
@@ -127,18 +124,12 @@ export default function DashboardPage() {
                             <td>{user.name}</td>
                             <td>{user.created_at}</td>
                             <td>
-                                <button
-                                    className={styles.viewButton}
-                                    onClick={() => handleViewDetails(user)}
-                                >
+                                <button className={styles.viewButton} onClick={() => handleViewDetails(user)}>
                                     상세보기
                                 </button>
                             </td>
                             <td>
-                                <button
-                                    className={styles.deleteButton}
-                                    onClick={() => handleDelete(user.clientid)}
-                                >
+                                <button className={styles.deleteButton} onClick={() => handleDelete(user.clientid)}>
                                     삭제
                                 </button>
                             </td>

@@ -37,7 +37,7 @@ export default function HomePage() {
                 </div>
 
                 <h1 className={styles.title}>🌱 성격 유형 검사 🌱</h1>
-                <p className={styles.description}>간단한 질문에 답하고, 당신에게 어울리는 성격과 식물을 알아보세요!</p>
+                <p className={styles.description}>간단한 질문에 답하고, 당신에게 어울리는 성격과 동물을 알아보세요!</p>
 
                 <motion.input
                     type="text"
